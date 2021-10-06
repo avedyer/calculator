@@ -1,13 +1,17 @@
 let input = document.getElementById("input");
 let output = document.getElementById("output");
+let operatorDisplay = document.getElementById("operator");
 let argument = 0;
 let result = 0;
 let operator = '';
 let buttons = document.querySelectorAll("button");
 
+input.innerHTML = '';
+output.innerHTML = '';
+
 let grabValue = () => {
-    argument = parseInt(input.innerHTML);
-    result = parseInt(output.innerHTML);
+    argument = parseFloat(input.innerHTML);
+    result = parseFloat(output.innerHTML);
 
     if (!argument) {
         argument = 0;
@@ -35,21 +39,21 @@ let compute = function() {
     }
 
     switch (operator) {
-        case 'add':
+        case '+':
             result += argument;
             break;
 
-        case 'subtract':
+        case '-':
             result -= argument;
             break;
 
-        case 'multiply':
+        case 'x':
             result *= argument;
             break;
-        case 'divide':
+        case '/':
             result /= argument;
             break;
-        case 'power':
+        case '^':
             result **= argument;
             break;
     }
@@ -64,47 +68,75 @@ let compute = function() {
 
     argument = 0;
     operator = '';
+    operatorDisplay.innerHTML = '';
 }
 
+let addZero = function() {
+    if (input.innerHTML !== "0") {
+        input.innerHTML += "0";
+    }
+}
+
+let addNum = function(num) {
+    if(input.innerHTML.length < 16) {
+        input.innerHTML += num;
+    }
+}
+
+let addDecimal = function() {
+    if(input.innerHTML.length < 16 && !input.innerHTML.includes('.')) {
+        if(input.innerHTML === "") {
+            input.innerHTML += "0";
+        }
+        input.innerHTML += ".";
+    }
+}
+
+let del = function() {
+    input.innerHTML = input.innerHTML.slice(0, -1);
+}
+
+let negative = function() {
+    if (input.innerHTML.charAt(0) === '-'){
+        input.innerHTML = input.innerHTML.substring(1);
+    }
+    else {
+        input.innerHTML = "-" + input.innerHTML;
+    }
+}
+
+let changeOperator = function(choice) {
+    if (!output.innerHTML) {
+        output.innerHTML = input.innerHTML;
+        input.innerHTML = '';
+    }
+    operator = choice;
+    operatorDisplay.innerHTML = operator;
+}
 
 for (const button of buttons) {
     let buttonValue = button.id;
 
-    if (buttonValue === "add" 
-    || buttonValue === "subtract" 
-    || buttonValue === "multiply" 
-    || buttonValue === "divide" 
-    || buttonValue === "power") {
+    if (buttonValue === "+" 
+    || buttonValue === "-" 
+    || buttonValue === "x" 
+    || buttonValue === "/" 
+    || buttonValue === "^") {
         button.onclick = () => {
-            if (!output.innerHTML) {
-                output.innerHTML = input.innerHTML;
-                input.innerHTML = '';
-            }
-            operator = buttonValue;
+            changeOperator(buttonValue);
         } 
     }
 
     else if (buttonValue === "negative") {
-        button.onclick = () => {
-            if (input.innerHTML.charAt(0) === '-'){
-                input.innerHTML = input.innerHTML.substring(1);
-            }
-            else {
-                input.innerHTML = "-" + input.innerHTML;
-            }
-        }
+        button.onclick = () => {negative()}
     }
 
     else if (buttonValue === "equals") {
-        button.onclick = () => {
-            compute();
-        }
+        button.onclick = () => {compute()}
     }
 
     else if (buttonValue === "del") {
-        button.onclick = () => {
-            input.innerHTML = input.innerHTML.slice(0, -1);
-        }
+        button.onclick = () => {del()}
         
     }
 
@@ -112,34 +144,57 @@ for (const button of buttons) {
         button.onclick = () => {
             input.innerHTML = '';
             output.innerHTML = '';
+            operatorDisplay.innerHTML = '';
         }
     }
     
     else if (buttonValue === "decimal") {
-        button.onclick = () => {
-            if(input.innerHTML.length < 16 && !input.innerHTML.includes('.')) {
-                if(input.innerHTML === "") {
-                    input.innerHTML += "0";
-                }
-                input.innerHTML += ".";
-            }
-        }
+        button.onclick = () => {addDecimal()}
     }
 
     else if (buttonValue === "zero") {
-        button.onclick = () => {
-            if (input.innerHTML !== "0") {
-                input.innerHTML += "0";
-            }
-        }
+        button.onclick = () => {addZero()}
     }
+
     else {
-        button.onclick = () => {
-            if(input.innerHTML.length < 16) {
-                input.innerHTML += buttonValue;
-            }
-        }
+        button.onclick = () => {addNum(buttonValue)}
     }
-    
-    
 }
+
+
+document.addEventListener('keydown', function(event) {
+    console.log(event.key);
+
+    if (event.key === '0') {
+        addZero();
+    }
+
+    else if(parseFloat(event.key)) {
+        addNum(event.key);
+    }
+
+    else if(event.key === '.') {
+        addDecimal();
+    }
+
+    else if (event.key === '=') {
+        compute();
+    }
+
+    else if (event.key === '+'
+           || event.key === '-'
+           || event.key === 'x'
+           || event.key === '/'
+           || event.key === '^'
+        ) {
+            changeOperator(event.key);
+    }
+
+    else if (event.key === 'Enter') {
+        compute();
+    }
+
+    else if (event.key === 'Backspace') {
+        del();
+    }
+})
