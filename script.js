@@ -1,30 +1,44 @@
 let input = document.getElementById("input");
 let output = document.getElementById("output");
-let argument;
-let result;
-let operator;
+let argument = 0;
+let result = 0;
+let operator = '';
 let buttons = document.querySelectorAll("button");
 
-console.log(input, output);
-
 let grabValue = () => {
-    argument = parseInt(input.textContent);
-    result = parseInt(output.textContent);
-}
+    argument = parseInt(input.innerHTML);
+    result = parseInt(output.innerHTML);
 
-let updateScreen = function() {
-    input.innerHTML = argument;
-    output.innerHTML = result;
+    if (!argument) {
+        argument = 0;
+    }
+
+    if (!result) {
+        result === 0;
+    }
 }
 
 let compute = function() {
-    grabValue;
+    grabValue();
+
+    if (!operator) {
+        if (!input.innerHTML) {
+            return;
+        }
+        output.innerHTML = input.innerHTML;
+        input.innerHTML = '';
+        return;
+    }
+
+    if (!argument) {
+        return;
+    }
 
     switch (operator) {
         case 'add':
             result += argument;
             break;
-        
+
         case 'subtract':
             result -= argument;
             break;
@@ -37,12 +51,19 @@ let compute = function() {
             break;
         case 'power':
             result **= argument;
-            break; 
+            break;
     }
 
-    argument = undefined;
+    input.innerHTML = '';
+    if (!result) {
+        output.innerHTML = "Undefined";
+    }
+    else {
+        output.innerHTML = result.toString();
+    }
 
-    updateScreen;
+    argument = 0;
+    operator = '';
 }
 
 
@@ -55,35 +76,51 @@ for (const button of buttons) {
     || buttonValue === "divide" 
     || buttonValue === "power") {
         button.onclick = () => {
+            if (!output.innerHTML) {
+                output.innerHTML = input.innerHTML;
+                input.innerHTML = '';
+            }
             operator = buttonValue;
-            updateScreen;
         } 
     }
 
-    else if (buttonValue ==="equals") {
-        button.onclick = compute;
-        updateScreen;
+    else if (buttonValue === "negative") {
+        button.onclick = () => {
+            if (input.innerHTML.charAt(0) === '-'){
+                input.innerHTML = input.innerHTML.substring(1);
+            }
+            else {
+                input.innerHTML = "-" + input.innerHTML;
+            }
+        }
+    }
+
+    else if (buttonValue === "equals") {
+        button.onclick = () => {
+            compute();
+        }
     }
 
     else if (buttonValue === "del") {
         button.onclick = () => {
-            argument = parseInt(String(argument.slice(0, -1)));
-            updateScreen;
+            input.innerHTML = input.innerHTML.slice(0, -1);
         }
         
     }
 
     else if (buttonValue === "clear") {
         button.onclick = () => {
-            argument = undefined;
-            result = undefined;
-            updateScreen;
+            input.innerHTML = '';
+            output.innerHTML = '';
         }
     }
     
     else if (buttonValue === "decimal") {
         button.onclick = () => {
             if(input.innerHTML.length < 16 && !input.innerHTML.includes('.')) {
+                if(input.innerHTML === "") {
+                    input.innerHTML += "0";
+                }
                 input.innerHTML += ".";
             }
         }
@@ -91,15 +128,13 @@ for (const button of buttons) {
 
     else if (buttonValue === "zero") {
         button.onclick = () => {
-            if (input.innerHTML.length != 0) {
+            if (input.innerHTML !== "0") {
                 input.innerHTML += "0";
-            } 
+            }
         }
     }
-
     else {
         button.onclick = () => {
-            console.log(input.innerHTML);
             if(input.innerHTML.length < 16) {
                 input.innerHTML += buttonValue;
             }
