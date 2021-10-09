@@ -58,7 +58,7 @@ let compute = function() {
             break;
     }
 
-    if(Math.floor(result / (10 ** 13)) !== 0) {
+    if(Math.floor(result / (10 ** 17)) !== 0) {
         result = undefined;
     }
 
@@ -82,7 +82,7 @@ let addZero = function() {
 }
 
 let addNum = function(num) {
-    if(input.innerHTML.length < 13) {
+    if(input.innerHTML.length < 17) {
         input.innerHTML += num;
     }
 }
@@ -183,7 +183,7 @@ document.addEventListener('keydown', function(event) {
         addDecimal();
     }
 
-    else if (event.key === '=') {
+    else if (event.key === '=' || event.key === 'Enter') {
         compute();
     }
 
@@ -194,10 +194,6 @@ document.addEventListener('keydown', function(event) {
            || event.key === '^'
         ) {
             changeOperator(event.key);
-    }
-
-    else if (event.key === 'Enter') {
-        compute();
     }
 
     else if (event.key === 'Backspace') {
