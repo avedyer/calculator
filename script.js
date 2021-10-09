@@ -58,9 +58,13 @@ let compute = function() {
             break;
     }
 
+    if(Math.floor(result / (10 ** 13)) !== 0) {
+        result = undefined;
+    }
+
     input.innerHTML = '';
     if (!result) {
-        output.innerHTML = "Undefined";
+        output.innerHTML = "UNDEFINED";
     }
     else {
         output.innerHTML = result.toString();
@@ -78,7 +82,7 @@ let addZero = function() {
 }
 
 let addNum = function(num) {
-    if(input.innerHTML.length < 16) {
+    if(input.innerHTML.length < 13) {
         input.innerHTML += num;
     }
 }
@@ -106,7 +110,10 @@ let negative = function() {
 }
 
 let changeOperator = function(choice) {
-    if (!output.innerHTML) {
+    if (operator) {
+        compute();
+    }
+    if (!output.innerHTML || output.innerHTML === "UNDEFINED") {
         output.innerHTML = input.innerHTML;
         input.innerHTML = '';
     }
@@ -163,7 +170,6 @@ for (const button of buttons) {
 
 
 document.addEventListener('keydown', function(event) {
-    console.log(event.key);
 
     if (event.key === '0') {
         addZero();
