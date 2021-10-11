@@ -39,6 +39,32 @@ button {
     color: darkslategray;
 }
 
+footer {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 100;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 3;
+    text-align: center;
+    font-style: italic;
+    color: darkslategray;
+}
+
+footer img {
+    width: 0.8em;
+    height: 0.8em;
+}
+
+a {
+    color: dimgray;
+}
+
+a:hover {
+    color: hsl(0, 60%, 40%);
+}
+
 .screen {
     background-color: white;
     width: 320px;
