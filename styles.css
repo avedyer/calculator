@@ -45,10 +45,8 @@ button {
     margin-bottom: 10px;
     height: 160px;
     text-align: right;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: 70px 50px 40px;
     overflow: hidden;
 }
 

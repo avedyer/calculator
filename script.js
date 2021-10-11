@@ -38,6 +38,7 @@ let compute = function() {
         return;
     }
 
+
     switch (operator) {
         case '+':
             result += argument;
@@ -58,7 +59,7 @@ let compute = function() {
             break;
     }
 
-    if(Math.floor(result / (10 ** 17)) !== 0) {
+    if(Math.floor(Math.abs(result) / (10 ** 17)) !== 0) {
         result = undefined;
     }
 
@@ -82,6 +83,9 @@ let addZero = function() {
 }
 
 let addNum = function(num) {
+    if (!operator) {
+        output.innerHTML = '';
+    }
     if(input.innerHTML.length < 17) {
         input.innerHTML += num;
     }
@@ -89,6 +93,9 @@ let addNum = function(num) {
 
 let addDecimal = function() {
     if(input.innerHTML.length < 16 && !input.innerHTML.includes('.')) {
+        if (!operator) {
+            output.innerHTML = '';
+        }
         if(input.innerHTML === "") {
             input.innerHTML += "0";
         }
@@ -101,6 +108,9 @@ let del = function() {
 }
 
 let negative = function() {
+    if (!operator) {
+        output.innerHTML = '';
+    }
     if (input.innerHTML.charAt(0) === '-'){
         input.innerHTML = input.innerHTML.substring(1);
     }
