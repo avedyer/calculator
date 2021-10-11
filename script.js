@@ -123,6 +123,9 @@ let changeOperator = function(choice) {
     if (operator) {
         compute();
     }
+    if (!input.innerHTML && !output.innerHTML) {
+        return;
+    }
     if (!output.innerHTML || output.innerHTML === "UNDEFINED") {
         output.innerHTML = input.innerHTML;
         input.innerHTML = '';
